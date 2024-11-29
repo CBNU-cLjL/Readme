@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습지 OCR 편집기</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+    .container {
+      display: flex;
+      flex: 1;
+    }
+    .left-pane, .right-pane {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .left-pane {
+      border-right: 2px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    .right-pane {
+      background-color: #ffffff;
+    }
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+    .image-preview {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .ocr-results {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f4f4f4;
+      white-space: pre-wrap;
+    }
+    .template-tools {
+      margin-top: 15px;
+    }
+    .template-tools button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      border: 1px solid #007BFF;
+      border-radius: 3px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    .template-tools button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 왼쪽 화면 -->
+    <div class="left-pane">
+      <h1>학습지 이미지</h1>
+      <div class="image-preview">
+        <img id="uploaded-image" src="" alt="업로드한 학습지 이미지" style="max-width: 100%; max-height: 400px;">
+      </div>
+      <input type="file" id="image-upload" accept="image/*" style="margin-top: 10px;">
+      <div class="template-tools">
+        <h2>템플릿 도구</h2>
+        <button onclick="selectTemplate('multiple-choice')">다지선다</button>
+        <button onclick="selectTemplate('table')">표</button>
+        <button onclick="selectTemplate('dialog')">대화 문제</button>
+        <button onclick="selectTemplate('descriptive')">서술형 문제</button>
+      </div>
+    </div>
+
+    <!-- 오른쪽 화면 -->
+    <div class="right-pane">
+      <h1>OCR 결과</h1>
+      <div class="ocr-results" id="ocr-results">
+        OCR 결과가 여기에 표시됩니다.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const imageUpload = document.getElementById("image-upload");
+    const uploadedImage = document.getElementById("uploaded-image");
+    const ocrResults = document.getElementById("ocr-results");
+
+    imageUpload.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          uploadedImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function selectTemplate(templateType) {
+      ocrResults.textContent = `선택한 템플릿: ${templateType}\nOCR 결과가 여기에 표시됩니다.`;
+    }
+  </script>
+</body>
+</html>
